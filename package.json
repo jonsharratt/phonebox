@@ -18,7 +18,8 @@
     "email": "bugs@craftship.io"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
   },
   "author": "Craftship Limited <hello@craftship.io>",
   "license": "MIT",
