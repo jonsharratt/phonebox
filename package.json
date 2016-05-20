@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0"
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "standard": "^7.1.0"
   }
 }
