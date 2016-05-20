@@ -24,5 +24,9 @@
   "license": "MIT",
   "dependencies": {
     "restify": "^4.0.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0"
   }
 }
