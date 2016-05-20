@@ -1,2 +1,2 @@
-require("babel-register");
-require('./api');
+require('babel-register')
+require('./api')

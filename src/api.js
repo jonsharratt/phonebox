@@ -1,14 +1,14 @@
-import restify from 'restify';
+import restify from 'restify'
 
-function respond(req, res, next) {
-  res.send('hello ' + req.params.name);
-  next();
+function respond (req, res, next) {
+  res.send('hello ' + req.params.name)
+  next()
 }
 
-const server = restify.createServer();
+const server = restify.createServer()
 
-server.get('/hello/:name', respond);
+server.get('/hello/:name', respond)
 
-server.listen(8080, function() {
-  console.log('%s listening at %s', server.name, server.url);
-});
+server.listen(8080, () => {
+  console.log('%s listening at %s', server.name, server.url)
+})
