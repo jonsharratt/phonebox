@@ -3,18 +3,26 @@
   "version": "0.0.1",
   "main": "",
   "description": "Simple support rotas for on call engineers.",
-  "keywords": ["phone", "rota", "support", "call"],
+  "keywords": [
+    "phone",
+    "rota",
+    "support",
+    "call"
+  ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/craftship/phonebox.git"
+    "type": "git",
+    "url": "https://github.com/craftship/phonebox.git"
   },
   "bugs": {
-    "url" : "https://github.com/craftship/phonebox",
-    "email" : "bugs@craftship.io"
+    "url": "https://github.com/craftship/phonebox",
+    "email": "bugs@craftship.io"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Craftship Limited <hello@craftship.io>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "restify": "^4.0.4"
+  }
 }
