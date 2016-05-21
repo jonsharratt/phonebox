@@ -1,4 +1,5 @@
 import RedisSMQ from 'rsmq'
+import createAlertWorker from './alerts'
 
 const rsmq = new RedisSMQ({
   host: 'redis',
@@ -6,19 +7,19 @@ const rsmq = new RedisSMQ({
   ns: 'phonebox'
 })
 
-rsmq.createQueue({ qname: 'alerts' }, (err, resp) => {
-  if (err) throw err
+function createQueue (name) {
+  return new Promise((resolve, reject) => {
+    return rsmq.createQueue({ qname: name }, (err, resp) => {
+      if (err) return reject(err)
+      resolve(resp)
+    })
+  })
+}
 
-  if (resp === 1) {
-    console.log('Alerts Queue Created.')
-  }
-})
+(async function () {
+  await createQueue('alerts')
+  await createQueue('calls')
 
-rsmq.createQueue({ qname: 'calls' }, (err, resp) => {
-  if (err) throw err
-
-  if (resp === 1) {
-    console.log('Calls Queue Created.')
-  }
-})
+  createAlertWorker(rsmq, 'newrelic')
+})()
 

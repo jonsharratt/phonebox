@@ -30,7 +30,13 @@
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-syntax-async-functions": "^6.8.0",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
     "standard": "^7.1.0"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   }
 }
