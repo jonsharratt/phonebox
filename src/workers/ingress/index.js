@@ -1,4 +1,5 @@
 import BaseWorker from '../base'
+import utils from 'async'
 
 export class IngressWorker extends BaseWorker {
   constructor (rsmq) {
@@ -8,10 +9,13 @@ export class IngressWorker extends BaseWorker {
 
   process (message, next) {
     const data = JSON.parse(message)
-    this.rsmq.sendMessage({
-      qname: 'egress',
-      message: this.render(`${__dirname}/${data.type}.ejs`, message)
-    }, (err, resp) => {
+
+    utils.each(this.channels, (channel, cb) => {
+      this.rsmq.sendMessage({
+        qname: channel,
+        message: this.render(`${__dirname}/${data.type}.ejs`, message)
+      }, cb)
+    }, err => {
       if (err) return next(err)
       next()
     })

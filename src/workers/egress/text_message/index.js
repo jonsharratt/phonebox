@@ -1,4 +1,4 @@
-import BaseEgressWorker from '../base'
+import BaseWorker from '../../base'
 import twilio from 'twilio'
 import path from 'path'
 
@@ -7,7 +7,11 @@ const client = new twilio.RestClient(
   process.env.TWILIO_TOKEN
 )
 
-export class TextMessage extends BaseEgressWorker {
+export class TextMessage extends BaseWorker {
+  constructor (rsmq) {
+    super('text_message', rsmq)
+  }
+
   process (message, next) {
     client.messages.create({
       body: super.render(
@@ -18,7 +22,6 @@ export class TextMessage extends BaseEgressWorker {
       from: process.env.TWILIO_FROM_NUMBER
     }, (err, response) => {
       if (err) return next(err)
-      console.log('message sent:', response.sid)
       next()
     })
   }

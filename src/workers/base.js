@@ -2,9 +2,17 @@ import RSMQWorker from 'rsmq-worker'
 import ejs from 'ejs'
 import fs from 'fs'
 
+const ENABLED_CHANNELS = [
+  'text_message'
+]
+
 export class BaseWorker extends RSMQWorker {
   constructor (name, rsmq) {
     super(name, { rsmq })
+
+    this.channels = ENABLED_CHANNELS
+    this.name = name
+    this.rsmq = rsmq
 
     this.on('message', (message, next) => {
       this.process(message, next)
@@ -20,6 +28,22 @@ export class BaseWorker extends RSMQWorker {
 
     this.on('timeout', msg => {
       console.log('TIMEOUT', msg.id, msg.rc)
+    })
+  }
+
+  start () {
+    console.log('asdas')
+    this.createQueue(this.name).then(() => {
+      super.start()
+    })
+  }
+
+  createQueue (name) {
+    return new Promise((resolve, reject) => {
+      return this.rsmq.createQueue({ qname: name }, (err, resp) => {
+        if (err) return reject(err)
+        resolve(resp)
+      })
     })
   }
 
