@@ -25,6 +25,7 @@
   "author": "Craftship Limited <hello@craftship.io>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.4.0",
     "restify": "^4.0.4",
     "rsmq": "^0.7.0"
   },
