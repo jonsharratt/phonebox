@@ -1,5 +1,8 @@
 import RSMQWorker from 'rsmq-worker'
 import twilio from 'twilio'
+import ejs from 'ejs'
+import fs from 'fs'
+import path from 'path'
 
 const client = new twilio.RestClient(
   process.env.TWILIO_SID,
@@ -27,9 +30,18 @@ export class BaseAlertWorker extends RSMQWorker {
     })
   }
 
-  text (message, next) {
+  templateFile (cwd, name) {
+    return path.join(cwd, 'templates', name)
+  }
+
+  render (file, message, next) {
+    const template = fs.readFileSync(file, { encoding: 'utf8' })
+    return ejs.render(template, JSON.parse(message))
+  }
+
+  text (template, message, next) {
     client.messages.create({
-      body: message,
+      body: this.render(template, message),
       to: process.env.TWILIO_TO_NUMBER,
       from: process.env.TWILIO_FROM_NUMBER
     }, (err, response) => {
