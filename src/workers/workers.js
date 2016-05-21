@@ -2,7 +2,7 @@ import RedisSMQ from 'rsmq'
 
 import IngressWorker from './ingress'
 
-import { TextMessage } from './egress'
+import { TextMessage, PhoneCall } from './egress'
 
 const rsmq = new RedisSMQ({
   host: 'redis',
@@ -16,3 +16,5 @@ ingressWorker.start()
 const textMessage = new TextMessage(rsmq)
 textMessage.start()
 
+const phoneCall = new PhoneCall(rsmq)
+phoneCall.start()
