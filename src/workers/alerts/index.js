@@ -1,4 +1,1 @@
-export default function (rsmq, box) {
-  require(`./${box}`).default(rsmq)
-}
-
+export { default as NewRelicAlert } from './newrelic'
