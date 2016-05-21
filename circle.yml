@@ -1,6 +1,6 @@
 machine:
   environment:
-    TAG: ${CIRCLE_SHA1:0:7}
+    TAG: latest
   services:
     - docker
 
