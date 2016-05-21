@@ -3,8 +3,8 @@ import RSMQWorker from 'rsmq-worker'
 export default function (rsmq) {
   const worker = new RSMQWorker('alerts', { rsmq })
 
-  worker.on('message', (msg, next) => {
-    console.log('MESSAGE', msg)
+  worker.on('message', (message, next) => {
+    console.log(JSON.parse(message))
     next()
   })
 
