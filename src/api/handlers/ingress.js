@@ -11,8 +11,8 @@ export default {
   post: async (req, res, next) => {
     try {
       const id = await rsmq.sendMessageAsync({
-        qname: 'alerts',
-        message: JSON.stringify(req.body)
+        qname: 'ingress',
+        message: JSON.stringify(Object.assign(req.body, { type: req.params.id }))
       })
       res.json({ id })
     } catch (err) {

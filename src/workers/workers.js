@@ -1,5 +1,8 @@
 import RedisSMQ from 'rsmq'
-import { NewRelicAlert } from './alerts'
+
+import IngressWorker from './ingress'
+
+import { TextMessage } from './egress'
 
 const rsmq = new RedisSMQ({
   host: 'redis',
@@ -7,20 +10,9 @@ const rsmq = new RedisSMQ({
   ns: 'phonebox'
 })
 
-function createQueue (name) {
-  return new Promise((resolve, reject) => {
-    return rsmq.createQueue({ qname: name }, (err, resp) => {
-      if (err) return reject(err)
-      resolve(resp)
-    })
-  })
-}
+const ingressWorker = new IngressWorker(rsmq)
+ingressWorker.start()
 
-(async function () {
-  await createQueue('alerts')
-  await createQueue('calls')
-
-  const newRelicAlert = new NewRelicAlert(rsmq)
-  newRelicAlert.start()
-})()
+const textMessage = new TextMessage(rsmq)
+textMessage.start()
 

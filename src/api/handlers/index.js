@@ -1,1 +1,1 @@
-export { default as alerts } from './alerts'
+export { default as ingress } from './ingress'

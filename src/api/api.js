@@ -7,7 +7,7 @@ import {
 } from './package.json'
 
 import restify from 'restify'
-import { alerts } from './handlers'
+import { ingress } from './handlers'
 
 const server = restify.createServer()
 server.use(restify.bodyParser())
@@ -22,7 +22,7 @@ server.get('/', (req, res) => {
   })
 })
 
-server.post('/alerts', alerts.post)
+server.post('/ingress/:id', ingress.post)
 
 server.listen(8080, () => {
   console.log('%s listening at %s', server.name, server.url)

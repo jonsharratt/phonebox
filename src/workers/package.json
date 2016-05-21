@@ -25,6 +25,7 @@
   "author": "Craftship Limited <hello@craftship.io>",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.0.0-rc.5",
     "ejs": "^2.4.1",
     "rsmq": "^0.7.0",
     "rsmq-worker": "^0.4.2",
