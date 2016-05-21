@@ -1,5 +1,5 @@
 import RedisSMQ from 'rsmq'
-import createAlertWorker from './alerts'
+import { NewRelicAlert } from './alerts'
 
 const rsmq = new RedisSMQ({
   host: 'redis',
@@ -20,6 +20,7 @@ function createQueue (name) {
   await createQueue('alerts')
   await createQueue('calls')
 
-  createAlertWorker(rsmq, 'newrelic')
+  const newRelicAlert = new NewRelicAlert(rsmq)
+  newRelicAlert.start()
 })()
 

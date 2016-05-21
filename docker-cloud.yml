@@ -16,3 +16,8 @@ workers:
     - redis
   volumes:
     - /usr/src/app
+  environment:
+    - TWILIO_SID
+    - TWILIO_TOKEN
+    - TWILIO_FROM_NUMBER
+    - TWILIO_TO_NUMBER

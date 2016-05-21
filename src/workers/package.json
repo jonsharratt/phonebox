@@ -26,7 +26,8 @@
   "license": "MIT",
   "dependencies": {
     "rsmq": "^0.7.0",
-    "rsmq-worker": "^0.4.2"
+    "rsmq-worker": "^0.4.2",
+    "twilio": "^2.9.1"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
