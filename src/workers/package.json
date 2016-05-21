@@ -1,0 +1,36 @@
+{
+  "name": "phonebox-workers",
+  "version": "0.0.1",
+  "main": "",
+  "description": "Simple support rotas for on call engineers.",
+  "keywords": [
+    "phone",
+    "rota",
+    "support",
+    "call"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/craftship/phonebox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/craftship/phonebox",
+    "email": "bugs@craftship.io"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "$(npm bin)/standard",
+    "start": "node ."
+  },
+  "author": "Craftship Limited <hello@craftship.io>",
+  "license": "MIT",
+  "dependencies": {
+    "rsmq": "^0.7.0",
+    "rsmq-worker": "^0.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "standard": "^7.1.0"
+  }
+}
