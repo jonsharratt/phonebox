@@ -3,12 +3,13 @@ import ejs from 'ejs'
 import fs from 'fs'
 
 const ENABLED_CHANNELS = [
-  'text_message'
+  'text_message',
+  'phone_call'
 ]
 
 export class BaseWorker extends RSMQWorker {
   constructor (name, rsmq) {
-    super(name, { rsmq })
+    super(name, { rsmq, timeout: 5000 })
 
     this.channels = ENABLED_CHANNELS
     this.name = name
