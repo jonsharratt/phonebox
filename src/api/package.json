@@ -19,13 +19,14 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "lint": "$(npm bin)/standard"
+    "lint": "$(npm bin)/standard",
+    "start": "node ."
   },
   "author": "Craftship Limited <hello@craftship.io>",
   "license": "MIT",
   "dependencies": {
-    "restify": "^4.0.4"
+    "restify": "^4.0.4",
+    "rsmq": "^0.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
