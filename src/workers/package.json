@@ -52,6 +52,7 @@
       "after",
       "afterEach",
       "it",
+      "injectr",
       "assert",
       "sinon"
     ],
