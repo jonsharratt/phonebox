@@ -18,7 +18,7 @@
     "email": "bugs@craftship.io"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "$(npm bin)/mocha ./egress/**/*.spec.js",
     "lint": "$(npm bin)/standard",
     "start": "node ."
   },
@@ -37,9 +37,24 @@
     "babel-plugin-syntax-async-functions": "^6.8.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "chai": "^3.5.0",
+    "injectr": "^0.5.1",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.4",
     "standard": "^7.1.0"
   },
   "standard": {
+    "globals": [
+      "describe",
+      "context",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it",
+      "assert",
+      "sinon"
+    ],
     "parser": "babel-eslint"
   }
 }
