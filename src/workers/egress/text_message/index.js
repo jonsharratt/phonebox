@@ -2,14 +2,14 @@ import BaseWorker from '../../base'
 import twilio from 'twilio'
 import path from 'path'
 
-const client = new twilio.RestClient(
-  process.env.TWILIO_SID,
-  process.env.TWILIO_TOKEN
-)
-
 export class TextMessage extends BaseWorker {
   constructor (rsmq) {
     super('text_message', rsmq)
+
+    this.client = new twilio.RestClient(
+      process.env.TWILIO_SID,
+      process.env.TWILIO_TOKEN
+    )
   }
 
   body (message) {
@@ -21,12 +21,12 @@ export class TextMessage extends BaseWorker {
 
   async process (message, next) {
     try {
-      await client.sendMessage({
+      await this.client.sendMessage({
         body: this.body(message),
         to: process.env.TWILIO_TO_NUMBER,
         from: process.env.TWILIO_FROM_NUMBER
       })
-      next()
+      next(null)
     } catch (err) {
       next(err)
     }
