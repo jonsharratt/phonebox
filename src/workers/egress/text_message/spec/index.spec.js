@@ -1,6 +1,6 @@
 import path from 'path'
 import twilio from './mocks/twilio.js'
-import message from './message.json'
+import message from './mocks/message.json'
 
 function textMessage (scenario) {
   const TextMessage = injectr('../../egress/text_message/index.js', {
