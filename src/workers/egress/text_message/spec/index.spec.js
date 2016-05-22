@@ -19,7 +19,7 @@ describe('Text Message', () => {
   let next
 
   beforeEach(() => {
-    fixture = JSON.stringify(message)
+    fixture = message
     next = sinon.stub()
   })
 

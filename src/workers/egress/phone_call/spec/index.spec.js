@@ -26,7 +26,7 @@ describe('Phone Call', () => {
   let twiml
 
   beforeEach(() => {
-    fixture = JSON.stringify(message)
+    fixture = message
     twiml = fs.readFileSync(
       path.join(__dirname, 'mocks', 'twiml.xml')
     ).toString('utf-8')
