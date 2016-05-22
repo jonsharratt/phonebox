@@ -14,7 +14,7 @@ services:
     build: ./src/workers
     volumes:
      - ./src/workers:/usr/src/app/
-    env_file: ./src/workers/.env-workers
+    env_file: ./src/workers/.env
     links:
       - redis
     depends_on:

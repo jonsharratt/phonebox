@@ -12,7 +12,10 @@ export default {
     try {
       const id = await rsmq.sendMessageAsync({
         qname: 'ingress',
-        message: JSON.stringify(Object.assign(req.body, { type: req.params.id }))
+        message: JSON.stringify(Object.assign(req.body, {
+          type: req.params.id,
+          base_url: (req.isSecure()) ? 'https' : 'http' + `://${req.headers.host}`
+        }))
       })
       res.json({ id })
     } catch (err) {

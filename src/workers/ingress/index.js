@@ -8,12 +8,10 @@ export class IngressWorker extends BaseWorker {
   }
 
   process (message, next) {
-    const data = JSON.parse(message)
-
     utils.each(this.channels, (channel, cb) => {
       this.rsmq.sendMessage({
         qname: channel,
-        message: this.render(`${__dirname}/${data.type}.ejs`, message)
+        message: this.render(`${__dirname}/${message.type}.ejs`, message)
       }, cb)
     }, err => {
       if (err) return next(err)

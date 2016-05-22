@@ -15,7 +15,6 @@ test:
     - docker run -d -p 80:8080 craftship/phonebox-api:$TAG; sleep 3
     - ./lint.sh
     - ./test.sh
-    - curl --retry 3 --retry-delay 1 -v http://localhost
 
 deployment:
   hub:

@@ -16,7 +16,7 @@ export class BaseWorker extends RSMQWorker {
     this.rsmq = rsmq
 
     this.on('message', (message, next) => {
-      this.process(message, next)
+      this.process(JSON.parse(message), next)
     })
 
     this.on('error', (err, msg) => {
@@ -49,7 +49,7 @@ export class BaseWorker extends RSMQWorker {
 
   render (file, message) {
     const template = fs.readFileSync(file)
-    return ejs.render(template.toString('utf-8'), JSON.parse(message))
+    return ejs.render(template.toString('utf-8'), message)
   }
 }
 

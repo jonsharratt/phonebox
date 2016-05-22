@@ -1,3 +1,5 @@
 node_modules
 .env*
 *debug*
+ngrok
+.DS_Store
