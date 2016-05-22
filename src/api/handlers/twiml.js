@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 
 import redis from 'redis'
-Promise.promisifyAll(redis.RedisClient.prototype);
+Promise.promisifyAll(redis.RedisClient.prototype)
 
 const client = redis.createClient({ host: 'redis' })
 
