@@ -52,7 +52,6 @@
       "after",
       "afterEach",
       "it",
-      "expect",
       "assert",
       "sinon"
     ],

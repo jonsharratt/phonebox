@@ -1,0 +1,38 @@
+{
+  "sid": "123456789",
+  "date_created": "Sun, 22 May 2016 11:13:00 +0000",
+  "date_updated": "Sun, 22 May 2016 11:13:00 +0000",
+  "date_sent": null,
+  "account_sid": "123456789",
+  "to": "+440000000000",
+  "from": "+440000000000",
+  "messaging_service_sid": null,
+  "body": "Sent from your Twilio trial account - My Tesco\nINFO\nNew Relic Alert - Channel Test",
+  "status": "queued",
+  "num_segments": "1",
+  "num_media": "0",
+  "direction": "outbound-api",
+  "api_version": "2010-04-01",
+  "price": null,
+  "price_unit": "USD",
+  "error_code": null,
+  "error_message": null,
+  "uri": "/2010-04-01/Accounts/123/Messages/123.json",
+  "subresource_uris": {
+    "media": "/2010-04-01/Accounts/123/Messages/123/Media.json"
+  },
+  "dateCreated": "2016-05-22T11:13:00.000Z",
+  "dateUpdated": "2016-05-22T11:13:00.000Z",
+  "dateSent": null,
+  "accountSid": "123456789",
+  "messagingServiceSid": null,
+  "numSegments": "1",
+  "numMedia": "0",
+  "apiVersion": "2010-04-01",
+  "priceUnit": "USD",
+  "errorCode": null,
+  "errorMessage": null,
+  "subresourceUris": {
+    "media": "/2010-04-01/Accounts/123/Messages/123/Media.json"
+  }
+}
