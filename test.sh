@@ -1,1 +1,1 @@
-docker run -i -t phonebox_workers npm run test
+docker run -i -t craftship/phonebox-workers npm run test
