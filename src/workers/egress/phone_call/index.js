@@ -34,13 +34,13 @@ export class PhoneCall extends BaseWorker {
     )
   }
 
-  async makeCall (twimlId) {
+  async makeCall (baseUrl, twimlId) {
     try {
       await this.twilioClient.makeCall({
         method: 'GET',
         to: process.env.TWILIO_TO_NUMBER,
         from: process.env.TWILIO_FROM_NUMBER,
-        url: `${process.env.NGROK_URL}/twiml/${twimlId}`
+        url: `${baseUrl}/twiml/${twimlId}`
       })
     } catch (err) {
       throw err
@@ -51,7 +51,7 @@ export class PhoneCall extends BaseWorker {
     try {
       const twiml = this.renderTwiml(message)
       const twimlId = await this.storeTwiml(twiml)
-      await this.makeCall(twimlId)
+      await this.makeCall(message.baseUrl, twimlId)
       next(null)
     } catch (err) {
       next(err)
