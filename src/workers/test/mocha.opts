@@ -1,0 +1,3 @@
+--require test/helpers/injectr
+--require test/helpers/globals
+--compilers js:babel-register
