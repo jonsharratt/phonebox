@@ -4,13 +4,14 @@ import redis from 'redis-mock'
 import twilio from './mocks/twilio.js'
 import message from './mocks/message.json'
 
+const twiml = fs.readFileSync(
+  path.join(__dirname, 'mocks', 'twiml.xml')
+).toString('utf-8')
+
 function phoneCall (scenario) {
   const PhoneCall = injectr('../../egress/phone_call/index.js', {
     redis,
-    twilio: twilio[scenario],
-    uuid: {
-      v1: () => { return 'generated-uid' }
-    }
+    twilio: twilio[scenario]
   }, {
     console,
     process,
@@ -23,13 +24,9 @@ function phoneCall (scenario) {
 
 describe('Phone Call', () => {
   let fixture
-  let twiml
 
   beforeEach(() => {
     fixture = message
-    twiml = fs.readFileSync(
-      path.join(__dirname, 'mocks', 'twiml.xml')
-    ).toString('utf-8')
   })
 
   describe('#renderTwiml', () => {
@@ -49,9 +46,9 @@ describe('Phone Call', () => {
     })
 
     it('should store twiml with 1 day expiry', async (done) => {
-      await subject.storeTwiml(twiml)
+      await subject.storeTwiml('session-id', twiml)
       assert.isTrue(subject.redisClient.set.calledWith(
-        'phonebox:twiml:generated-uid',
+        'phonebox:twiml:session-id',
         twiml,
         'px',
         86400000))

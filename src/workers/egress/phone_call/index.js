@@ -2,7 +2,6 @@ import BaseWorker from '../../base'
 import twilio from 'twilio'
 import path from 'path'
 import redis from 'redis'
-import uuid from 'uuid'
 
 export class PhoneCall extends BaseWorker {
   constructor (rsmq) {
@@ -18,9 +17,8 @@ export class PhoneCall extends BaseWorker {
     )
   }
 
-  storeTwiml (twiml) {
+  storeTwiml (id, twiml) {
     return new Promise(resolve => {
-      const id = uuid.v1()
       this.redisClient.set(`phonebox:twiml:${id}`, twiml, 'px', 86400000, () => {
         resolve(id)
       })
@@ -34,13 +32,16 @@ export class PhoneCall extends BaseWorker {
     )
   }
 
-  async makeCall (baseUrl, twimlId) {
+  async makeCall (session, baseUrl) {
     try {
       await this.twilioClient.makeCall({
         method: 'GET',
         to: process.env.TWILIO_TO_NUMBER,
         from: process.env.TWILIO_FROM_NUMBER,
-        url: `${baseUrl}/twiml/${twimlId}`
+        statusCallback: `${baseUrl}/call/${session}`,
+        url: `${baseUrl}/twiml/${session}`,
+        ifMachine: 'Hangup',
+        statusCallbackEvent: ['completed']
       })
     } catch (err) {
       throw err
@@ -50,8 +51,8 @@ export class PhoneCall extends BaseWorker {
   async process (message, next) {
     try {
       const twiml = this.renderTwiml(message)
-      const twimlId = await this.storeTwiml(twiml)
-      await this.makeCall(message.baseUrl, twimlId)
+      await this.storeTwiml(message.session, twiml)
+      await this.makeCall(message.session, message.baseUrl)
       next(null)
     } catch (err) {
       next(err)
