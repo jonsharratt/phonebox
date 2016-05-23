@@ -8,13 +8,14 @@ import {
 
 import {
   ingress,
-  twiml
+  twiml,
+  call
 } from './handlers'
 
 import restify from 'restify'
 
 const server = restify.createServer()
-server.use(restify.bodyParser())
+server.use(restify.bodyParser({ mapParams: false }))
 
 server.get('/', (req, res) => {
   res.json({
@@ -26,6 +27,7 @@ server.get('/', (req, res) => {
   })
 })
 
+server.post('/call/:id', call.post)
 server.post('/ingress/:id', ingress.post)
 server.get('/twiml/:id', twiml.get)
 
