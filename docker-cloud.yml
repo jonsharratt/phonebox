@@ -1,3 +1,5 @@
+redis:
+  image: 'redis:latest'
 api:
   image: 'craftship/phonebox-api:latest'
   links:
@@ -6,10 +8,6 @@ api:
     - '80:8080'
   volumes:
     - /usr/src/app
-redis:
-  image: 'redis:latest'
-  ports:
-    - '6379:6379'
 workers:
   image: 'craftship/phonebox-workers:latest'
   links:
