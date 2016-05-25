@@ -7,12 +7,20 @@ export default {
       sendMessage () {
         return Promise.resolve(success)
       }
+
+      makeCall () {
+        return Promise.resolve(success)
+      }
     }
   },
   error: {
     RestClient: class {
       sendMessage () {
         return Promise.reject(error)
+      }
+
+      makeCall () {
+        return Promise.reject(success)
       }
     }
   }
