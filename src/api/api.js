@@ -28,7 +28,7 @@ server.get('/', (req, res) => {
 })
 
 server.post('/call/:id', call.post)
-server.post('/ingress/:id', ingress.post)
+server.post('/ingress/:type/:session', ingress.post)
 server.get('/twiml/:id', twiml.get)
 
 server.listen(8080, () => {
