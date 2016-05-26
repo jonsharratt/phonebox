@@ -3,8 +3,8 @@ import ejs from 'ejs'
 import fs from 'fs'
 
 const ENABLED_CHANNELS = [
-  'text_message',
-  'phone_call'
+  //'text_message',
+  //'phone_call'
 ]
 
 export class BaseWorker extends RSMQWorker {
