@@ -18,11 +18,20 @@ export class AlertWorker extends BaseWorker {
     return await this.redisClient.setAsync(`phonebox:alert:${key}`, JSON.stringify(body))
   }
 
+  rota () {
+    return ['447919888886', '2', '3']
+  }
+
   async process ({ body, meta }, next) {
+    const rota = this.rota()
     const { session, type, channel } = meta
 
     const attempts = await this.redisClient.getAsync(`phonebox:attempts:${channel}:${type}:${session}`)
-    if (attempts >= 3) return next()
+    if (attempts >= 3) {
+      if (meta.index >= rota.length) return next()
+      meta.index = (meta.index || 0) + 1
+      meta.to = rota[meta.index]
+    }
 
     await this.store(`${channel}:${type}:${session}`, { meta, body })
 

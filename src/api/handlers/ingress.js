@@ -18,7 +18,6 @@ const meta = (req, channel) => {
     session: req.params.session || uuid.v1(),
     type: req.params.type,
     baseUrl: (req.isSecure()) ? 'https' : 'http' + `://${req.headers.host}`,
-    to: req.query.to || process.env.TWILIO_TO_NUMBER,
     from: req.query.from || process.env.TWILIO_FROM_NUMBER,
     channel
   }
