@@ -12,8 +12,8 @@ export class TextMessage extends BaseWorker {
     )
   }
 
-  body (message) {
-    return this.render(
+  async body (message) {
+    return await this.render(
       path.join(__dirname, '../templates', 'plain_text.ejs'),
       message
     )
@@ -22,9 +22,9 @@ export class TextMessage extends BaseWorker {
   async process (message, next) {
     try {
       await this.client.sendMessage({
-        body: this.body(message),
-        to: process.env.TWILIO_TO_NUMBER,
-        from: process.env.TWILIO_FROM_NUMBER
+        body: await this.body(message),
+        to: message.meta.to,
+        from: message.meta.from
       })
       next(null)
     } catch (err) {
