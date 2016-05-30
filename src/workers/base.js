@@ -1,17 +1,13 @@
 import RSMQWorker from 'rsmq-worker'
 import ejs from 'ejs'
-import fs from 'fs'
+import Promise from 'bluebird'
 
-const ENABLED_CHANNELS = [
-  //'text_message',
-  //'phone_call'
-]
+const renderFile = Promise.promisify(ejs.renderFile)
 
 export class BaseWorker extends RSMQWorker {
   constructor (name, rsmq) {
     super(name, { rsmq, timeout: 5000 })
 
-    this.channels = ENABLED_CHANNELS
     this.name = name
     this.rsmq = rsmq
 
@@ -47,9 +43,8 @@ export class BaseWorker extends RSMQWorker {
     })
   }
 
-  render (file, message) {
-    const template = fs.readFileSync(file)
-    return ejs.render(template.toString('utf-8'), message)
+  async render (file, message) {
+    return await renderFile(file, message)
   }
 }
 
