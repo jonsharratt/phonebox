@@ -11,10 +11,10 @@ const rsmq = Promise.promisifyAll(new RedisSMQ({
   ns: 'phonebox'
 }))
 
-async function retry (body) {
+async function retry (message) {
   return await rsmq.sendMessageAsync({
-    qname: 'phone_call',
-    message: body
+    qname: 'ingress',
+    message
   })
 }
 

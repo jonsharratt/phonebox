@@ -27,9 +27,9 @@ server.get('/', (req, res) => {
   })
 })
 
-server.post('/call/:id', call.post)
+server.get('/twilio/twiml/:id', twiml.get)
+server.post('/twilio/call/:session', call.post)
 server.post('/ingress/:type/:session', ingress.post)
-server.get('/twiml/:id', twiml.get)
 
 server.listen(8080, () => {
   console.log('%s listening at %s', server.name, server.url)
