@@ -1,6 +1,4 @@
 import BaseWorker from '../base'
-import utils from 'async'
-import uuid from 'uuid'
 import redis from 'redis'
 
 export class IngressWorker extends BaseWorker {
@@ -15,7 +13,7 @@ export class IngressWorker extends BaseWorker {
 
   store (session, body) {
     return new Promise((resolve, reject) => {
-      this.redisClient.set(`phonebox:ingress:${session}`, body, (err, reply) => {
+      this.redisClient.set(`phonebox:ingress:${session}`, JSON.stringify(body), (err, reply) => {
         if (err) return reject(err)
         resolve(reply)
       })
@@ -23,19 +21,19 @@ export class IngressWorker extends BaseWorker {
   }
 
   async process (message, next) {
-    const session = uuid.v1()
-    const body = this.render(`${__dirname}/${message.type}.ejs`, Object.assign(message, { session }))
-    await this.store(session, body)
+    const { session, type, attempts, channel } = message.meta
 
-    utils.each(this.channels, (channel, cb) => {
-      this.rsmq.sendMessage({
-        qname: channel,
-        message: body
-      }, cb)
-    }, err => {
-      if (err) return next(err)
-      next()
-    })
+    if (attempts >= 3) return next()
+    message.meta.attempts = message.meta.attempts + 1
+
+    await this.store(session, message)
+    const body = await this.render(`${__dirname}/${type}.ejs`, message)
+
+    this.rsmq.sendMessage({
+      qname: channel,
+      message: body,
+      delay: attempts * 180
+    }, next)
   }
 }
 
