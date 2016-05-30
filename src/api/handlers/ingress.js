@@ -20,7 +20,6 @@ const meta = (req, channel) => {
     baseUrl: (req.isSecure()) ? 'https' : 'http' + `://${req.headers.host}`,
     to: req.query.to || process.env.TWILIO_TO_NUMBER,
     from: req.query.from || process.env.TWILIO_FROM_NUMBER,
-    attempts: parseInt(req.query.attempts || 0),
     channel
   }
 }
@@ -29,8 +28,11 @@ export default {
   post: async (req, res, next) => {
     utils.each(ENABLED_CHANNELS, async (channel, cb) => {
       await rsmq.sendMessageAsync({
-        qname: 'ingress',
-        message: JSON.stringify(Object.assign(req.body, { meta: meta(req, channel) }))
+        qname: 'alert',
+        message: JSON.stringify({
+          body: req.body,
+          meta: meta(req, channel)
+        })
       })
 
       cb()

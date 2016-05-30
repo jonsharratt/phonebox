@@ -8,7 +8,7 @@ const client = redis.createClient({ host: 'redis' })
 export default {
   get: async (req, res, next) => {
     try {
-      const twiml = await client.getAsync(`phonebox:twiml:${req.params.id}`)
+      const twiml = await client.getAsync(`phonebox:twiml:${req.params.type}:${req.params.session}`)
       res.writeHead(200, {
         'Content-Length': Buffer.byteLength(twiml),
         'Content-Type': 'text/xml'

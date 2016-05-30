@@ -27,8 +27,8 @@ server.get('/', (req, res) => {
   })
 })
 
-server.get('/twilio/twiml/:id', twiml.get)
-server.post('/twilio/call/:session', call.post)
+server.get('/twilio/twiml/:type/:session', twiml.get)
+server.post('/twilio/call/:type/:session', call.post)
 server.post('/ingress/:type/:session', ingress.post)
 
 server.listen(8080, () => {

@@ -12,19 +12,19 @@ export class TextMessage extends BaseWorker {
     )
   }
 
-  async body (message) {
+  async body (data) {
     return await this.render(
       path.join(__dirname, '../templates', 'plain_text.ejs'),
-      message
+      data
     )
   }
 
-  async process (message, next) {
+  async process ({ meta, body }, next) {
     try {
       await this.client.sendMessage({
-        body: await this.body(message),
-        to: message.meta.to,
-        from: message.meta.from
+        body: await this.body(body),
+        to: meta.to,
+        from: meta.from
       })
       next(null)
     } catch (err) {
