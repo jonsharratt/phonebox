@@ -1,5 +1,11 @@
 {
   "title": "account foo",
   "severity": "bar severity",
-  "details": "foo bar details"
+  "details": "foo bar details",
+  "meta": {
+    "to": "000000",
+    "from": "000000",
+    "session": "foo",
+    "baseUrl": "http://test"
+  }
 }

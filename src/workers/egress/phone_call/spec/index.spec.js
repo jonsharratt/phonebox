@@ -37,9 +37,9 @@ describe('Phone Call', () => {
   })
 
   describe('#renderTwiml', () => {
-    it('should render correctly', () => {
+    it('should render correctly', async () => {
       const subject = phoneCall('success')
-      const actual = subject.renderTwiml(fixture)
+      const actual = await subject.renderTwiml(fixture)
       assert.equal(actual, twiml)
     })
   })
@@ -74,14 +74,14 @@ describe('Phone Call', () => {
       })
 
       it('should call twilio with correct parameters', () => {
-        subject.makeCall('foo', 'http://test')
+        subject.makeCall(fixture.meta)
 
         assert.isTrue(subject.twilioClient.makeCall.calledWith({
           method: 'GET',
           to: '000000',
           from: '000000',
-          statusCallback: 'http://test/call/foo',
-          url: 'http://test/twiml/foo',
+          statusCallback: 'http://test/twilio/call/foo',
+          url: 'http://test/twilio/twiml/foo',
           ifMachine: 'Hangup',
           statusCallbackEvent: ['completed']
         }))

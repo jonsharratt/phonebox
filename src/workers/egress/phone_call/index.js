@@ -25,21 +25,21 @@ export class PhoneCall extends BaseWorker {
     })
   }
 
-  renderTwiml (message) {
-    return this.render(
+  async renderTwiml (message) {
+    return await this.render(
       path.join(__dirname, '../templates', 'twiml.ejs'),
       message
     )
   }
 
-  async makeCall (session, baseUrl) {
+  async makeCall ({ to, from, baseUrl, session }) {
     try {
       await this.twilioClient.makeCall({
         method: 'GET',
-        to: process.env.TWILIO_TO_NUMBER,
-        from: process.env.TWILIO_FROM_NUMBER,
-        statusCallback: `${baseUrl}/call/${session}`,
-        url: `${baseUrl}/twiml/${session}`,
+        to: to,
+        from: from,
+        statusCallback: `${baseUrl}/twilio/call/${session}`,
+        url: `${baseUrl}/twilio/twiml/${session}`,
         ifMachine: 'Hangup',
         statusCallbackEvent: ['completed']
       })
@@ -50,9 +50,9 @@ export class PhoneCall extends BaseWorker {
 
   async process (message, next) {
     try {
-      const twiml = this.renderTwiml(message)
-      await this.storeTwiml(message.session, twiml)
-      await this.makeCall(message.session, message.baseUrl)
+      const twiml = await this.renderTwiml(message)
+      await this.storeTwiml(message.meta.session, twiml)
+      await this.makeCall(message.meta)
       next(null)
     } catch (err) {
       next(err)
