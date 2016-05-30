@@ -24,9 +24,9 @@ describe('Text Message', () => {
   })
 
   describe('#body', () => {
-    it('should render in plain text', () => {
+    it('should render in plain text', async () => {
       const subject = textMessage('success')
-      const body = subject.body(fixture)
+      const body = await subject.body(fixture)
 
       assert.equal(body, 'account foo\nbar severity\nfoo bar details\n')
     })

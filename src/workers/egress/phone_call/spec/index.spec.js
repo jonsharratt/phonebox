@@ -4,13 +4,21 @@ import redis from 'redis-mock'
 import twilio from './mocks/twilio.js'
 import message from './mocks/message.json'
 
+const twiml = fs.readFileSync(
+  path.join(__dirname, 'mocks', 'twiml.xml')
+).toString('utf-8')
+
+const process = {
+  env: {
+    TWILIO_TO_NUMBER: '000000',
+    TWILIO_FROM_NUMBER: '000000'
+  }
+}
+
 function phoneCall (scenario) {
   const PhoneCall = injectr('../../egress/phone_call/index.js', {
     redis,
-    twilio: twilio[scenario],
-    uuid: {
-      v1: () => { return 'generated-uid' }
-    }
+    twilio: twilio[scenario]
   }, {
     console,
     process,
@@ -23,20 +31,65 @@ function phoneCall (scenario) {
 
 describe('Phone Call', () => {
   let fixture
-  let twiml
 
   beforeEach(() => {
     fixture = message
-    twiml = fs.readFileSync(
-      path.join(__dirname, 'mocks', 'twiml.xml')
-    ).toString('utf-8')
   })
 
   describe('#renderTwiml', () => {
-    it('should render correctly', () => {
+    it('should render correctly', async () => {
       const subject = phoneCall('success')
-      const actual = subject.renderTwiml(fixture)
+      const actual = await subject.renderTwiml(fixture)
       assert.equal(actual, twiml)
+    })
+  })
+
+  describe('#makeCall', () => {
+    let subject
+
+    describe('with error', () => {
+      beforeEach(() => {
+        subject = phoneCall('error')
+        sinon.spy(subject.twilioClient, 'makeCall')
+      })
+
+      it('should throw error up the stack', async (done) => {
+        try {
+          await subject.makeCall('foo', 'http://test')
+        } catch (error) {
+          assert.isNotNull(error)
+          done()
+        }
+      })
+
+      afterEach(() => {
+        sinon.restore(subject.twilioClient)
+      })
+    })
+
+    describe('without error', () => {
+      beforeEach(() => {
+        subject = phoneCall('success')
+        sinon.spy(subject.twilioClient, 'makeCall')
+      })
+
+      it('should call twilio with correct parameters', () => {
+        subject.makeCall(fixture.meta)
+
+        assert.isTrue(subject.twilioClient.makeCall.calledWith({
+          method: 'GET',
+          to: '000000',
+          from: '000000',
+          statusCallback: 'http://test/twilio/call/foo',
+          url: 'http://test/twilio/twiml/foo',
+          ifMachine: 'Hangup',
+          statusCallbackEvent: ['completed']
+        }))
+      })
+
+      afterEach(() => {
+        sinon.restore(subject.twilioClient)
+      })
     })
   })
 
@@ -49,9 +102,9 @@ describe('Phone Call', () => {
     })
 
     it('should store twiml with 1 day expiry', async (done) => {
-      await subject.storeTwiml(twiml)
+      await subject.storeTwiml('session-id', twiml)
       assert.isTrue(subject.redisClient.set.calledWith(
-        'phonebox:twiml:generated-uid',
+        'phonebox:twiml:session-id',
         twiml,
         'px',
         86400000))
