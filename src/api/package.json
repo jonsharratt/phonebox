@@ -25,10 +25,12 @@
   "author": "Craftship Limited <hello@craftship.io>",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.0.0-rc.5",
     "bluebird": "^3.4.0",
     "redis": "^2.6.0-2",
     "restify": "^4.0.4",
-    "rsmq": "^0.7.0"
+    "rsmq": "^0.7.0",
+    "uuid": "^2.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
@@ -36,6 +38,7 @@
     "babel-plugin-syntax-async-functions": "^6.8.0",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "babel-register": "^6.9.0",
     "standard": "^7.1.0"
   },
   "standard": {
