@@ -12,11 +12,14 @@ import CallStatusWorker from './ingress/call_status'
 import { TextMessage, PhoneCall } from './egress'
 
 const alertWorker = new AlertWorker(rsmq)
-alertWorker.start()
+alertWorker.init()
+
 const callStatusWorker = new CallStatusWorker(rsmq)
-callStatusWorker.start()
+callStatusWorker.init()
 
 const textMessage = new TextMessage(rsmq)
-textMessage.start()
+textMessage.init()
+
 const phoneCall = new PhoneCall(rsmq)
-phoneCall.start()
+phoneCall.init()
+

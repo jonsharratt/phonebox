@@ -28,18 +28,10 @@ export class BaseWorker extends RSMQWorker {
     })
   }
 
-  start () {
-    this.createQueue(this.name).then(() => {
+  init () {
+    this.rsmq.createQueue({ qname: this.name }, (error, res) => {
+      if (error) throw error
       super.start()
-    })
-  }
-
-  createQueue (name) {
-    return new Promise((resolve, reject) => {
-      return this.rsmq.createQueue({ qname: name }, (err, resp) => {
-        if (err) return reject(err)
-        resolve(resp)
-      })
     })
   }
 
