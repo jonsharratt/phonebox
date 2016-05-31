@@ -80,8 +80,8 @@ describe('Phone Call', () => {
           method: 'GET',
           to: '000000',
           from: '000000',
-          statusCallback: 'http://test/twilio/call/foo',
-          url: 'http://test/twilio/twiml/foo',
+          statusCallback: 'http://test/twilio/call/phone_call/foo',
+          url: 'http://test/twilio/twiml/phone_call/foo',
           ifMachine: 'Hangup',
           statusCallbackEvent: ['completed']
         }))
@@ -102,9 +102,9 @@ describe('Phone Call', () => {
     })
 
     it('should store twiml with 1 day expiry', async (done) => {
-      await subject.storeTwiml('session-id', twiml)
+      await subject.storeTwiml(fixture.meta, twiml)
       assert.isTrue(subject.redisClient.set.calledWith(
-        'phonebox:twiml:session-id',
+        'phonebox:twiml:phone_call:foo',
         twiml,
         'px',
         86400000))

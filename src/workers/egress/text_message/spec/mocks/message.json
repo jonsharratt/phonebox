@@ -1,11 +1,14 @@
 {
-  "title": "account foo",
-  "severity": "bar severity",
-  "details": "foo bar details",
+  "body": {
+    "title": "account foo",
+    "severity": "bar severity",
+    "details": "foo bar details"
+  },
   "meta": {
     "to": "000000",
     "from": "000000",
     "session": "foo",
+    "type": "text_message",
     "baseUrl": "http://test"
   }
 }

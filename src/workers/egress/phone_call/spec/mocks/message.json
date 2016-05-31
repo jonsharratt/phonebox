@@ -6,6 +6,7 @@
     "to": "000000",
     "from": "000000",
     "session": "foo",
+    "type": "phone_call",
     "baseUrl": "http://test"
   }
 }
