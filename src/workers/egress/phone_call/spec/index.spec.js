@@ -104,7 +104,7 @@ describe('Phone Call', () => {
     it('should store twiml with 1 day expiry', async (done) => {
       await subject.storeTwiml(fixture.meta, twiml)
       assert.isTrue(subject.redisClient.set.calledWith(
-        'phonebox:twiml:phone_call:foo',
+        'phonebox:twiml:alert_source:phone_call:foo',
         twiml,
         'px',
         86400000))

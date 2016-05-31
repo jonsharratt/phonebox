@@ -7,6 +7,7 @@
     "from": "000000",
     "session": "foo",
     "type": "phone_call",
+    "channel": "alert_source",
     "baseUrl": "http://test"
   }
 }
