@@ -33,11 +33,11 @@ export class PhoneCall extends BaseWorker {
     )
   }
 
-  async makeCall ({ to, from, baseUrl, session, type }) {
+  async makeCall ({ person, from, baseUrl, session, type }) {
     try {
       await this.twilioClient.makeCall({
         method: 'GET',
-        to: to,
+        to: person.phone,
         from: from,
         statusCallback: `${baseUrl}/twilio/call/${type}/${session}`,
         url: `${baseUrl}/twilio/twiml/${type}/${session}`,

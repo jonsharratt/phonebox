@@ -15,7 +15,20 @@ export class AlertWorker extends BaseWorker {
   }
 
   rota () {
-    return ['447919888886', '447919888886', '447919888886']
+    return [
+      {
+        name: 'Jon Sharratt',
+        phone: '447919888886'
+      },
+      {
+        name: 'Jon Sharratt',
+        phone: '447919888886'
+      },
+      {
+        name: 'Jon Sharratt',
+        phone: '447919888886'
+      }
+    ]
   }
 
   async process ({ body, meta }, next) {
@@ -28,10 +41,10 @@ export class AlertWorker extends BaseWorker {
       meta.index = meta.index + 1
     }
 
-    meta.to = rota[meta.index]
+    meta.person = rota[meta.index]
     await this.store(this.storageKey('alert', meta), { meta, body })
 
-    const rendered = await this.render(`${__dirname}/${type}.ejs`, body)
+    const rendered = await this.render(`${__dirname}/${type}.ejs`, { meta, body })
     const message = JSON.stringify({ meta, body: JSON.parse(rendered) })
 
     await this.rsmq.sendMessageAsync({
