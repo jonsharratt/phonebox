@@ -9,6 +9,10 @@
     "from": "000000",
     "session": "foo",
     "type": "text_message",
-    "baseUrl": "http://test"
+    "baseUrl": "http://test",
+    "person": {
+      "name": "Jon Sharratt",
+      "phone": "000000"
+    }
   }
 }
