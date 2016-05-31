@@ -30,7 +30,6 @@ export class BaseWorker extends RSMQWorker {
   }
 
   storageKey (action, { session, type, channel }) {
-    console.log(`${this.namespace}:${action}:${channel}:${type}:${session}`)
     return `${this.namespace}:${action}:${channel}:${type}:${session}`
   }
 
