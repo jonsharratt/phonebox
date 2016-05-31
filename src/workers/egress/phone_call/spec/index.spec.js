@@ -10,7 +10,6 @@ const twiml = fs.readFileSync(
 
 const process = {
   env: {
-    TWILIO_TO_NUMBER: '000000',
     TWILIO_FROM_NUMBER: '000000'
   }
 }

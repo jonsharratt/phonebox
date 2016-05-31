@@ -10,6 +10,7 @@ export class TextMessage extends BaseWorker {
       process.env.TWILIO_SID,
       process.env.TWILIO_TOKEN
     )
+    this.from = process.env.TWILIO_FROM_NUMBER
   }
 
   async body (data) {
@@ -24,7 +25,7 @@ export class TextMessage extends BaseWorker {
       await this.client.sendMessage({
         body: await this.body({ meta, body }),
         to: meta.person.phone,
-        from: meta.from
+        from: this.from
       })
       next(null)
     } catch (err) {

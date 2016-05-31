@@ -15,6 +15,7 @@ export class PhoneCall extends BaseWorker {
       process.env.TWILIO_SID,
       process.env.TWILIO_TOKEN
     )
+    this.from = process.env.TWILIO_FROM_NUMBER
   }
 
   storeTwiml (meta, twiml) {
@@ -33,12 +34,12 @@ export class PhoneCall extends BaseWorker {
     )
   }
 
-  async makeCall ({ person, from, baseUrl, session, type }) {
+  async makeCall ({ person, baseUrl, session, type }) {
     try {
       await this.twilioClient.makeCall({
         method: 'GET',
         to: person.phone,
-        from: from,
+        from: this.from,
         statusCallback: `${baseUrl}/twilio/call/${type}/${session}`,
         url: `${baseUrl}/twilio/twiml/${type}/${session}`,
         ifMachine: 'Hangup',
