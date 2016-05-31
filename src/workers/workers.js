@@ -1,20 +1,25 @@
+import Promise from 'bluebird'
 import RedisSMQ from 'rsmq'
 
-import IngressWorker from './ingress'
+const rsmq = Promise.promisifyAll(new RedisSMQ({
+  host: 'redis',
+  ns: 'phonebox'
+}))
+
+import AlertWorker from './ingress/alert'
+import CallStatusWorker from './ingress/call_status'
 
 import { TextMessage, PhoneCall } from './egress'
 
-const rsmq = new RedisSMQ({
-  host: 'redis',
-  port: 6379,
-  ns: 'phonebox'
-})
+const alertWorker = new AlertWorker(rsmq)
+alertWorker.init()
 
-const ingressWorker = new IngressWorker(rsmq)
-ingressWorker.start()
+const callStatusWorker = new CallStatusWorker(rsmq)
+callStatusWorker.init()
 
 const textMessage = new TextMessage(rsmq)
-textMessage.start()
+textMessage.init()
 
 const phoneCall = new PhoneCall(rsmq)
-phoneCall.start()
+phoneCall.init()
+

@@ -10,6 +10,7 @@ export class BaseWorker extends RSMQWorker {
 
     this.name = name
     this.rsmq = rsmq
+    this.namespace = 'phonebox'
 
     this.on('message', (message, next) => {
       this.process(JSON.parse(message), next)
@@ -28,18 +29,18 @@ export class BaseWorker extends RSMQWorker {
     })
   }
 
-  start () {
-    this.createQueue(this.name).then(() => {
-      super.start()
-    })
+  storageKey (action, { session, type, channel }) {
+    return `${this.namespace}:${action}:${channel}:${type}:${session}`
   }
 
-  createQueue (name) {
-    return new Promise((resolve, reject) => {
-      return this.rsmq.createQueue({ qname: name }, (err, resp) => {
-        if (err) return reject(err)
-        resolve(resp)
-      })
+  async store (key, body) {
+    return await this.redisClient.setAsync(key, JSON.stringify(body))
+  }
+
+  init () {
+    this.rsmq.createQueue({ qname: this.name }, (error, res) => {
+      if (error) throw error
+      super.start()
     })
   }
 

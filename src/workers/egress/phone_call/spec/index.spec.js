@@ -10,7 +10,6 @@ const twiml = fs.readFileSync(
 
 const process = {
   env: {
-    TWILIO_TO_NUMBER: '000000',
     TWILIO_FROM_NUMBER: '000000'
   }
 }
@@ -80,8 +79,8 @@ describe('Phone Call', () => {
           method: 'GET',
           to: '000000',
           from: '000000',
-          statusCallback: 'http://test/twilio/call/foo',
-          url: 'http://test/twilio/twiml/foo',
+          statusCallback: 'http://test/twilio/call/phone_call/foo',
+          url: 'http://test/twilio/twiml/phone_call/foo',
           ifMachine: 'Hangup',
           statusCallbackEvent: ['completed']
         }))
@@ -102,9 +101,9 @@ describe('Phone Call', () => {
     })
 
     it('should store twiml with 1 day expiry', async (done) => {
-      await subject.storeTwiml('session-id', twiml)
+      await subject.storeTwiml(fixture.meta, twiml)
       assert.isTrue(subject.redisClient.set.calledWith(
-        'phonebox:twiml:session-id',
+        'phonebox:twiml:alert_source:phone_call:foo',
         twiml,
         'px',
         86400000))
@@ -113,6 +112,61 @@ describe('Phone Call', () => {
 
     afterEach(() => {
       sinon.restore(redis.RedisClient.prototype.set)
+    })
+  })
+
+  describe('#process', () => {
+    describe('without error', () => {
+      let subject
+      let next
+
+      beforeEach(() => {
+        next = sinon.stub()
+        subject = phoneCall('success')
+
+        sinon.stub(subject, 'renderTwiml').returns('foo')
+        sinon.stub(subject, 'storeTwiml')
+        sinon.stub(subject, 'makeCall')
+      })
+
+      it('should render twiml', async (done) => {
+        await subject.process(fixture, next)
+        assert.isTrue(subject.renderTwiml.calledWith(fixture))
+        done()
+      })
+
+      it('should store twiml', async (done) => {
+        await subject.process(fixture, next)
+        assert.isTrue(subject.storeTwiml.calledWith(fixture.meta, 'foo'))
+        done()
+      })
+
+      it('should make call', async (done) => {
+        await subject.process(fixture, next)
+        assert.isTrue(subject.makeCall.calledWith(fixture.meta))
+        done()
+      })
+    })
+
+    describe('with error', () => {
+      let subject
+      let next
+
+      beforeEach(() => {
+        next = sinon.stub()
+
+        subject = phoneCall('error')
+
+        subject.renderTwiml = sinon.stub().throws()
+        subject.storeTwiml = sinon.stub().throws()
+        subject.makeCall = sinon.stub().throws()
+      })
+
+      it('should pass error to base worker', async (done) => {
+        await subject.process(fixture, next)
+        assert.isFalse(next.calledWith(null))
+        done()
+      })
     })
   })
 })

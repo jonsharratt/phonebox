@@ -2,6 +2,12 @@ import path from 'path'
 import twilio from './mocks/twilio.js'
 import message from './mocks/message.json'
 
+const process = {
+  env: {
+    TWILIO_FROM_NUMBER: '000000'
+  }
+}
+
 function textMessage (scenario) {
   const TextMessage = injectr('../../egress/text_message/index.js', {
     'twilio': twilio[scenario]
