@@ -10,7 +10,6 @@ api:
     - /usr/src/app
   environment:
     - TWILIO_FROM_NUMBER
-    - TWILIO_TO_NUMBER
 workers:
   image: 'craftship/phonebox-workers:latest'
   links:
@@ -18,5 +17,6 @@ workers:
   volumes:
     - /usr/src/app
   environment:
-    - TWILIO_SID
-    - TWILIO_TOKEN
+    - TWILIO_SID=
+    - TWILIO_TOKEN=
+    - TWILIO_FROM_NUMBER=
