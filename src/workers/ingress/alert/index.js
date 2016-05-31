@@ -17,7 +17,7 @@ export class AlertWorker extends BaseWorker {
   }
 
   async process ({ body, meta }, next) {
-    const { session, type, channel } = meta
+    const { type, channel } = meta
 
     const attempts = await this.redisClient.getAsync(this.storageKey('attempt', meta))
     if (attempts >= 3) {
