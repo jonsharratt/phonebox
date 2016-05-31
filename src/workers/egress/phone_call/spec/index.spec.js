@@ -115,5 +115,60 @@ describe('Phone Call', () => {
       sinon.restore(redis.RedisClient.prototype.set)
     })
   })
+
+  describe('#process', () => {
+    describe('without error', () => {
+      let subject
+      let next
+
+      beforeEach(() => {
+        next = sinon.stub()
+        subject = phoneCall('success')
+
+        sinon.stub(subject, 'renderTwiml').returns('foo')
+        sinon.stub(subject, 'storeTwiml')
+        sinon.stub(subject, 'makeCall')
+      })
+
+      it('should render twiml', async (done) => {
+        await subject.process(fixture, next)
+        assert.isTrue(subject.renderTwiml.calledWith(fixture))
+        done()
+      })
+
+      it('should store twiml', async (done) => {
+        await subject.process(fixture, next)
+        assert.isTrue(subject.storeTwiml.calledWith(fixture.meta, 'foo'))
+        done()
+      })
+
+      it('should make call', async (done) => {
+        await subject.process(fixture, next)
+        assert.isTrue(subject.makeCall.calledWith(fixture.meta))
+        done()
+      })
+    })
+
+    describe('with error', () => {
+      let subject
+      let next
+
+      beforeEach(() => {
+        next = sinon.stub()
+
+        subject = phoneCall('error')
+
+        subject.renderTwiml = sinon.stub().throws()
+        subject.storeTwiml = sinon.stub().throws()
+        subject.makeCall = sinon.stub().throws()
+      })
+
+      it('should pass error to base worker', async (done) => {
+        await subject.process(fixture, next)
+        assert.isFalse(next.calledWith(null))
+        done()
+      })
+    })
+  })
 })
 
