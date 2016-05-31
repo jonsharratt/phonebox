@@ -17,10 +17,11 @@ export class PhoneCall extends BaseWorker {
     )
   }
 
-  storeTwiml ({ session, type }, twiml) {
+  storeTwiml (meta, twiml) {
     return new Promise(resolve => {
-      this.redisClient.set(`phonebox:twiml:${type}:${session}`, twiml, 'px', 86400000, () => {
-        resolve(session)
+      const key = this.storageKey('twiml', meta)
+      this.redisClient.set(key, twiml, 'px', 86400000, () => {
+        resolve(meta.session)
       })
     })
   }

@@ -14,10 +14,6 @@ export class AlertWorker extends BaseWorker {
     })
   }
 
-  async store (key, body) {
-    return await this.redisClient.setAsync(`phonebox:alert:${key}`, JSON.stringify(body))
-  }
-
   rota () {
     return ['447919888886', '447919888886', '447919888886']
   }
@@ -26,15 +22,14 @@ export class AlertWorker extends BaseWorker {
     const { session, type, channel } = meta
     const rota = this.rota()
 
-    const attempts = await this.redisClient.getAsync(`phonebox:attempts:${channel}:${type}:${session}`)
+    const attempts = await this.redisClient.getAsync(this.storageKey('attempt', meta))
     if (attempts >= 3) {
       if (meta.index >= rota.length) return next()
       meta.index = meta.index + 1
-      console.log(`calling next person on call: ${rota[meta.index]}`)
     }
 
     meta.to = rota[meta.index]
-    await this.store(`${channel}:${type}:${session}`, { meta, body })
+    await this.store(this.storageKey('alert', meta), { meta, body })
 
     const rendered = await this.render(`${__dirname}/${type}.ejs`, body)
     const message = JSON.stringify({ meta, body: JSON.parse(rendered) })

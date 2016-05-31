@@ -10,6 +10,7 @@ export class BaseWorker extends RSMQWorker {
 
     this.name = name
     this.rsmq = rsmq
+    this.namespace = 'phonebox'
 
     this.on('message', (message, next) => {
       this.process(JSON.parse(message), next)
@@ -26,6 +27,15 @@ export class BaseWorker extends RSMQWorker {
     this.on('timeout', msg => {
       console.log('TIMEOUT', msg.id, msg.rc)
     })
+  }
+
+  storageKey (action, { session, type, channel }) {
+    console.log(`${this.namespace}:${action}:${channel}:${type}:${session}`)
+    return `${this.namespace}:${action}:${channel}:${type}:${session}`
+  }
+
+  async store (key, body) {
+    return await this.redisClient.setAsync(key, JSON.stringify(body))
   }
 
   init () {

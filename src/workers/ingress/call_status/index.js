@@ -14,14 +14,14 @@ export class CallStatusWorker extends BaseWorker {
     })
   }
 
-  async alert ({ session, type, channel }) {
-    const key = `phonebox:alert:${channel}:${type}:${session}`
+  async alert (meta) {
+    const key = this.storageKey('alert', meta)
     const data = await this.redisClient.getAsync(key)
     return JSON.parse(data)
   }
 
   async addAttempt ({ meta }) {
-    const key = `phonebox:attempts:${meta.channel}:${meta.type}:${meta.session}`
+    const key = this.storageKey('attempt', meta)
     return await this.redisClient.incrAsync(key)
   }
 

@@ -22,7 +22,6 @@ export default {
       })
       res.json({ status: 'OK' })
     } catch (error) {
-      console.log(error)
       res.json({ status: 'ERROR' })
     }
   }
