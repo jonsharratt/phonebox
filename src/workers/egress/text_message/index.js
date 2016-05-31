@@ -22,7 +22,7 @@ export class TextMessage extends BaseWorker {
   async process ({ meta, body }, next) {
     try {
       await this.client.sendMessage({
-        body: await this.body(body),
+        body: await this.body({ meta, body }),
         to: meta.person.phone,
         from: meta.from
       })

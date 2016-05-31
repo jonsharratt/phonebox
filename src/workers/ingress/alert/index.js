@@ -1,6 +1,8 @@
 import Promise from 'bluebird'
 import BaseWorker from '../../base'
 
+import rota from '../../rota.json'
+
 import redis from 'redis'
 Promise.promisifyAll(redis.RedisClient.prototype)
 
@@ -14,26 +16,8 @@ export class AlertWorker extends BaseWorker {
     })
   }
 
-  rota () {
-    return [
-      {
-        name: 'Jon Sharratt',
-        phone: '447919888886'
-      },
-      {
-        name: 'Jon Sharratt',
-        phone: '447919888886'
-      },
-      {
-        name: 'Jon Sharratt',
-        phone: '447919888886'
-      }
-    ]
-  }
-
   async process ({ body, meta }, next) {
     const { session, type, channel } = meta
-    const rota = this.rota()
 
     const attempts = await this.redisClient.getAsync(this.storageKey('attempt', meta))
     if (attempts >= 3) {

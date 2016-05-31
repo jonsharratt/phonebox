@@ -26,10 +26,10 @@ export class PhoneCall extends BaseWorker {
     })
   }
 
-  async renderTwiml (body) {
+  async renderTwiml (data) {
     return await this.render(
       path.join(__dirname, '../templates', 'twiml.ejs'),
-      body
+      data
     )
   }
 
@@ -51,7 +51,7 @@ export class PhoneCall extends BaseWorker {
 
   async process ({ body, meta }, next) {
     try {
-      const twiml = await this.renderTwiml(body)
+      const twiml = await this.renderTwiml({ meta, body })
       await this.storeTwiml(meta, twiml)
       await this.makeCall(meta)
       next(null)
