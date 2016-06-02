@@ -1,0 +1,15 @@
+{
+  "body": {
+    "account_name": "account foo",
+    "severity": "bar severity",
+    "details": "foo bar details"
+  },
+  "meta": {
+    "to": "000000",
+    "from": "000000",
+    "session": "foo",
+    "type": "newrelic",
+    "channel": "phone_call",
+    "baseUrl": "http://test"
+  }
+}

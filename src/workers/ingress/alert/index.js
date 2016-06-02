@@ -21,15 +21,15 @@ export class AlertWorker extends BaseWorker {
 
     const attempts = await this.redisClient.getAsync(this.storageKey('attempt', meta))
     if (attempts >= 3) {
-      if (meta.index >= rota.length) return next()
-      meta.index = meta.index + 1
+      if (meta.index >= rota.length) return next(null)
+      meta.index = (meta.index || 0) + 1
     }
 
     meta.person = rota[meta.index]
     await this.store(this.storageKey('alert', meta), { meta, body })
 
     const rendered = await this.render(`${__dirname}/${type}.ejs`, { meta, body })
-    const message = JSON.stringify({ meta, body: JSON.parse(rendered) })
+    const message = JSON.stringify({ body: JSON.parse(rendered), meta })
 
     await this.rsmq.sendMessageAsync({
       qname: channel,
@@ -37,7 +37,7 @@ export class AlertWorker extends BaseWorker {
       delay: 0
     })
 
-    next()
+    next(null)
   }
 }
 
