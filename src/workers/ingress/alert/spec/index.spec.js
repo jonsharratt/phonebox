@@ -20,7 +20,6 @@ function alert () {
 }
 
 describe('Alert', () => {
-
   describe('#process', () => {
     describe('less than three attempts', () => {
       let subject
